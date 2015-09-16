@@ -1,5 +1,6 @@
 package io.forward.yaml.internal
 
+import io.forward.yaml._
 import org.yaml.snakeyaml._
 import scala.collection.JavaConverters._
 import spray.json._
@@ -10,13 +11,13 @@ object Parser {
 
   def load(input: String): Object = new Yaml().load(input)
 
-  def asYAML(obj: Object): AST = obj match {
+  def asYAML(obj: Object): YAML = obj match {
     case x: java.util.Map[Object @unchecked, Object @unchecked] =>
-      YNull
+      YObj(x.asScala.toMap map { case (k, v) => (k.toString, asYAML(v)) })
     case x: java.util.List[Object @unchecked] =>
       YSeq(x.asScala.map(asYAML).toVector)
     case x: java.util.Set[Object @unchecked] =>
-      YNull
+      YSeq(x.asScala.map(asYAML).toVector)
     case i: java.lang.Integer =>
       YNull
     case i: java.lang.Long =>
@@ -30,7 +31,7 @@ object Parser {
     case d: java.util.Date =>
       YNull
     case b: java.lang.Boolean =>
-      YNull
+      YBool(b)
     case _ =>
       YNull
   }

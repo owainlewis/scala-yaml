@@ -6,12 +6,21 @@ import scala.collection.JavaConverters._
 import spray.json._
 
 object Parser {
+  /**
+   * Give a YAML string, return a YAML AST
+   *
+   * @param input A valid YAML string
+   */
+  def yamlFromYAML(input: String) = asYAML(load(input))
 
-  val asJSON: (String) => JsValue = load _ andThen asJValue
+  /**
+   * Given a YAML string, return a Spray JSON AST
+   *
+   * @param input A valid YAML string
+   */
+  def jsonFromYAML(input: String) = asJValue(load(input))
 
-  def load(input: String): Object = new Yaml().load(input)
-
-  def asYAML(obj: Object): YAML = obj match {
+  def asYAML(obj: Object): YValue = obj match {
     case x: java.util.Map[Object @unchecked, Object @unchecked] =>
       YObj(x.asScala.toMap map { case (k, v) => (k.toString, asYAML(v)) })
     case x: java.util.List[Object @unchecked] =>
@@ -31,7 +40,7 @@ object Parser {
     case d: java.util.Date =>
       YNull
     case b: java.lang.Boolean =>
-      YBool(b)
+      YBoolean(b)
     case _ =>
       YNull
   }
@@ -64,4 +73,6 @@ object Parser {
       JsBoolean(b)
     case _ => JsNull
   }
+
+  private def load(input: String): Object = new Yaml().load(input)
 }

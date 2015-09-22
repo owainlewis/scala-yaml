@@ -6,19 +6,14 @@ import scala.collection.JavaConverters._
 import spray.json._
 
 object Parser {
-  /**
-   * Give a YAML string, return a YAML AST
-   *
-   * @param input A valid YAML string
-   */
-  def yamlFromYAML(input: String) = asYAML(load(input))
 
-  /**
-   * Given a YAML string, return a Spray JSON AST
-   *
-   * @param input A valid YAML string
-   */
-  def jsonFromYAML(input: String) = asJValue(load(input))
+  implicit class PimpedString(val string: String) extends AnyVal {
+    def parseYaml: YValue = parseAsYAML(string)
+  }
+
+  val parseAsYAML: (String) => YValue  = load _ andThen asYAML
+
+  val parseAsJSON: (String) => JsValue = load _ andThen asJValue
 
   def asYAML(obj: Object): YValue = obj match {
     case x: java.util.Map[Object @unchecked, Object @unchecked] =>
@@ -26,7 +21,7 @@ object Parser {
     case x: java.util.List[Object @unchecked] =>
       YSeq(x.asScala.map(asYAML).toVector)
     case x: java.util.Set[Object @unchecked] =>
-      YSeq(x.asScala.map(asYAML).toVector)
+      YSet(x.asScala.map(asYAML).toSet)
     case i: java.lang.Integer =>
       YNull
     case i: java.lang.Long =>
@@ -74,5 +69,5 @@ object Parser {
     case _ => JsNull
   }
 
-  private def load(input: String): Object = new Yaml().load(input)
+  def load(input: String): Object = new Yaml().load(input)
 }

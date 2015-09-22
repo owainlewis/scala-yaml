@@ -1,5 +1,7 @@
 package io.forward.yaml
 
-class ASTSpec {
+import org.scalatest._
+
+class ASTSpec extends WordSpec with Matchers {
 
 }

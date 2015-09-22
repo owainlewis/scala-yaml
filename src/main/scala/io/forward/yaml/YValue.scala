@@ -4,6 +4,9 @@ import scala.collection.JavaConversions._
 
 abstract class YValue {
 
+  /** Arrow traverse */
+  def >>>(v: String): Option[YValue]
+
   def isNull: Boolean =
     this == YNull
 
@@ -22,23 +25,31 @@ abstract class YValue {
 }
 
 case class YObj(value: Map[String, YValue]) extends YValue {
+
   def asSnakeYAML = null // TODO
 
+  def >>>(v: String): Option[YValue] = value.get(v)
 }
 
 case class YNumber[A](value: A)(val num: Numeric[A]) extends YValue {
 
   def asSnakeYAML = null // TODO
+
+  def >>>(v: String) = None
 }
 
 case class YString(value: String) extends YValue {
   def asSnakeYAML = null
+
+  def >>>(v: String) = None
 }
 
 sealed abstract class YBoolean extends YValue {
   def value: Boolean
 
   def asSnakeYAML = null
+
+  def >>>(v: String) = None
 }
 
 object YBoolean extends YValue {
@@ -46,6 +57,8 @@ object YBoolean extends YValue {
   def unapply(x: YBoolean): Option[Boolean] = Some(x.value)
 
   def asSnakeYAML = this
+
+  def >>>(v: String) = None
 }
 
 case object YTrue  extends YBoolean  { def value = true  }
@@ -59,6 +72,8 @@ case class YSeq(elements: Vector[YValue]) extends YValue {
   def isEmpty: Boolean = this.elements.isEmpty
 
   def asSnakeYAML = seqAsJavaList(elements.map(_.asSnakeYAML))
+
+  def >>>(v: String) = None
 }
 
 object YSeq{
@@ -72,6 +87,8 @@ case class YSet(elements: Set[YValue]) extends YValue {
   def isEmpty: Boolean = this.elements.isEmpty
 
   def asSnakeYAML = setAsJavaSet(elements.map(_.asSnakeYAML))
+
+  def >>>(v: String) = None
 }
 
 object YSet {
@@ -81,4 +98,6 @@ object YSet {
 
 case object YNull extends YValue {
   def asSnakeYAML = null
+
+  def >>>(v: String) = None
 }

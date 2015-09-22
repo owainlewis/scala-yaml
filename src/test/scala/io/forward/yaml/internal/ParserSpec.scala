@@ -11,7 +11,7 @@ class ParserSpec extends WordSpec with Matchers {
 
     "read a simple YAML file"in {
 
-      val contents = Source.fromFile("src/test/scala/resources/A.yaml").getLines().mkString("\n")
+      val contents = Source.fromFile("src/test/scala/resources/B.yaml").getLines().mkString("\n")
 
       val yaml = Parser.parseAsYAML(contents)
 

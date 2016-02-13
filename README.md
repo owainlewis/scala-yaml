@@ -2,6 +2,8 @@
 
 A YAML library for Scala
 
+![](https://api.travis-ci.org/owainlewis/scala-yaml.svg)
+
 ## Motivation
 
 There isn't much support for parsing YAML in Scala. This library aims to give a nice simple DSL for working with and

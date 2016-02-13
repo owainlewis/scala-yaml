@@ -13,7 +13,7 @@ Parse a yaml string
 
 ```scala
 
-scala> import io.forward.yaml.internal.Parser
+scala> import io.forward.yaml.Parser
 scala> Parser.parseAsYAML("['foo', 'bar', 'baz']")
 
 // io.forward.yaml.YValue = YSeq(Vector(YString(foo), YString(bar), YString(baz)))

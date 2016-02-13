@@ -29,7 +29,9 @@ sealed abstract class YBoolean extends YValue {
 }
 
 object YBoolean extends YValue {
+
   def apply(x: Boolean): YBoolean = if (x) YTrue else YFalse
+
   def unapply(x: YBoolean): Option[Boolean] = Some(x.value)
 }
 
@@ -37,8 +39,11 @@ case object YTrue  extends YBoolean  { def value = true  }
 
 case object YFalse extends YBoolean  { def value = false }
 
-case class YSeq(elements: Vector[YValue]) extends YValue {
-  def map[B](f: YValue => B) = this.elements map f
+case class YSeq[A <: YValue](elements: Vector[A]) extends YValue {
+
+  def map[B](f: A => B): YSeq[B] =
+    new YSeq(this.elements map f)
+
   def isEmpty: Boolean = this.elements.isEmpty
 }
 
@@ -46,8 +51,11 @@ object YSeq{
   def apply(elements: YValue*) = new YSeq(elements.toVector)
 }
 
-case class YSet(elements: Set[YValue]) extends YValue {
-  def map[B](f: YValue => B) = this.elements map f
+case class YSet[A <: YValue](elements: Set[A]) extends YValue {
+
+  def map[B](f: YValue => B): YSet[B] =
+    new YSet(this.elements map f)
+
   def isEmpty: Boolean = this.elements.isEmpty
 }
 

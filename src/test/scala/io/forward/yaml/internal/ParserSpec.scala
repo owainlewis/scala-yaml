@@ -22,6 +22,12 @@ class ParserSpec extends WordSpec with Matchers {
       actual shouldBe expected
     }
 
+    "parse a YAML string using the parseAsYAML method" in {
+      val actual = Parser.parseAsYAML("['Apple', 'Orange', 'Strawberry', 'Mango']")
+      val expected = YSeq(Vector(YString("Apple"), YString("Orange"), YString("Strawberry"), YString("Mango")))
+      actual shouldBe expected
+    }
+
     "read a simple YAML file"in {
       val yaml = loadAsYAML("A.yaml")
       yaml shouldBe YSeq(Vector(YString("Casablanca"), YString("North by Northwest"), YString("The Man Who Wasn't There")))

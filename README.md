@@ -11,7 +11,7 @@ traversing YAML in Scala. Interally it's based on the snake YAML Java library.
 
 Parse a yaml string
 
-```
+```scala
 
 scala> import io.forward.yaml.internal.Parser
 scala> Parser.parseAsYAML("['foo', 'bar', 'baz']")

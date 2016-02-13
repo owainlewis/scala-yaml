@@ -1,8 +1,7 @@
-package io.forward.yaml.internal
+package io.forward.yaml
 
 import org.scalatest._
 import scala.io.Source
-import io.forward.yaml._
 
 class ParserSpec extends WordSpec with Matchers {
 

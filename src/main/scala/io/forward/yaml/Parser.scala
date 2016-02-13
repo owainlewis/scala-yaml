@@ -1,9 +1,9 @@
-package io.forward.yaml.internal
+package io.forward.yaml
 
-import io.forward.yaml._
 import org.yaml.snakeyaml._
-import scala.collection.JavaConverters._
 import spray.json._
+
+import scala.collection.JavaConverters._
 
 object Parser {
   implicit class PimpedString(val string: String) extends AnyVal {

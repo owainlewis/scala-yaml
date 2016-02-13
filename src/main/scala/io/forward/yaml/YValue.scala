@@ -41,8 +41,7 @@ case object YFalse extends YBoolean  { def value = false }
 
 case class YSeq[A <: YValue](elements: Vector[A]) extends YValue {
 
-  def map[B](f: A => B): YSeq[B] =
-    new YSeq(this.elements map f)
+  def map[B <: YValue](f: A => B): YSeq[B] = new YSeq(this.elements map f)
 
   def isEmpty: Boolean = this.elements.isEmpty
 }
@@ -53,7 +52,7 @@ object YSeq{
 
 case class YSet[A <: YValue](elements: Set[A]) extends YValue {
 
-  def map[B](f: YValue => B): YSet[B] =
+  def map[B <: YValue](f: YValue => B): YSet[B] =
     new YSet(this.elements map f)
 
   def isEmpty: Boolean = this.elements.isEmpty

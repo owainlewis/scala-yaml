@@ -6,7 +6,6 @@ import scala.collection.JavaConverters._
 import spray.json._
 
 object Parser {
-
   implicit class PimpedString(val string: String) extends AnyVal {
     def parseYaml: YValue = parseAsYAML(string)
   }
@@ -23,17 +22,17 @@ object Parser {
     case x: java.util.Set[Object @unchecked] =>
       YSet(x.asScala.map(asYAML).toSet)
     case i: java.lang.Integer =>
-      YNull
+      YInt(i)
     case i: java.lang.Long =>
-      YNull
+      YLong(i)
     case i: java.math.BigInteger =>
-      YNull
+      YBigInt(i)
     case i: java.lang.Double =>
-      YNull
+      YDouble(i)
     case s: java.lang.String =>
       YString(s)
     case d: java.util.Date =>
-      YNull
+      YDate(d)
     case b: java.lang.Boolean =>
       YBoolean(b)
     case _ =>
@@ -43,7 +42,7 @@ object Parser {
   /**
    * Map to Spray JSON internal AST
    *
-   * @param obj An unmarshalled Snake YAML Java object
+   * @param obj A Snake YAML Java object
    */
   def asJValue(obj: Object): JsValue = obj match {
     case x: java.util.Map[Object @unchecked, Object @unchecked] =>

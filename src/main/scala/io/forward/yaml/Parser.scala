@@ -6,13 +6,10 @@ import spray.json._
 import scala.collection.JavaConverters._
 
 object Parser {
-  implicit class PimpedString(val string: String) extends AnyVal {
-    def parseYaml: YValue = parseAsYAML(string)
-  }
 
-  val parseAsYAML: (String) => YValue  = load _ andThen asYAML
+  def parseAsYAML(yaml: String): YValue = asYAML(load(yaml))
 
-  val parseAsJSON: (String) => JsValue = load _ andThen asJValue
+  def parseAsJSON(yaml: String): JsValue = asJValue(load(yaml))
 
   def asYAML(obj: Object): YValue = obj match {
     case x: java.util.Map[Object @unchecked, Object @unchecked] =>

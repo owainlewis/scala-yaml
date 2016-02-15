@@ -14,10 +14,9 @@ traversing YAML in Scala. Interally it's based on the snake YAML Java library.
 Parse a yaml string
 
 ```scala
+scala> import io.forward.yaml._
+import io.forward.yaml._
 
-scala> import io.forward.yaml.Parser
-scala> Parser.parseAsYAML("['foo', 'bar', 'baz']")
-
-// io.forward.yaml.YValue = YSeq(Vector(YString(foo), YString(bar), YString(baz)))
-
+scala> """["foo", "bar"]""".parseYAML
+res0: io.forward.yaml.YValue = YString(["foo", "bar"])
 ```

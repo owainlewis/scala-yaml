@@ -7,10 +7,10 @@ package object yaml {
 
   case class DeserializationException(msg: String, cause: Throwable) extends RuntimeException(msg, cause)
 
-  implicit def pimpString(string: String) = new PimpedString(string)
+  implicit def pimpString(string: String) = 
+    new PimpedString(string)
 
   class PimpedString(string: String) {
     def parseYAML: YValue = Parser.parseAsYAML(string)
   }
 }
-

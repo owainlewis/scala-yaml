@@ -6,10 +6,7 @@ import spray.json._
 import scala.collection.JavaConverters._
 
 object Parser {
-
   def parseAsYAML(yaml: String): YValue = asYAML(load(yaml))
-
-  def parseAsJSON(yaml: String): JsValue = asJValue(load(yaml))
 
   def asYAML(obj: Object): YValue = obj match {
     case x: java.util.Map[Object @unchecked, Object @unchecked] =>
@@ -34,35 +31,6 @@ object Parser {
       YBoolean(b)
     case _ =>
       YNull
-  }
-
-  /**
-   * Map to Spray JSON internal AST
-   *
-   * @param obj A Snake YAML Java object
-   */
-  def asJValue(obj: Object): JsValue = obj match {
-    case x: java.util.Map[Object @unchecked, Object @unchecked] =>
-      JsObject(x.asScala.map {  case (k, v) => k.toString -> asJValue(v) }.toMap)
-    case x: java.util.List[Object @unchecked] =>
-      JsArray(x.asScala.map(asJValue).toVector)
-    case x: java.util.Set[Object @unchecked] =>
-      JsArray(x.asScala.map(asJValue).toVector)
-    case i: java.lang.Integer =>
-      JsNumber(BigDecimal(i))
-    case i: java.lang.Long =>
-      JsNumber(BigDecimal(i))
-    case i: java.math.BigInteger =>
-      JsNumber(BigDecimal(i))
-    case i: java.lang.Double =>
-      JsNumber(BigDecimal(i))
-    case s: java.lang.String =>
-      JsString(s)
-    case d: java.util.Date =>
-      JsString(d.toString)
-    case b: java.lang.Boolean =>
-      JsBoolean(b)
-    case _ => JsNull
   }
 
   def load(input: String): Object = new Yaml().load(input)

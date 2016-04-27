@@ -6,7 +6,7 @@ trait DefaultFormats {
     def write(x: Int) = YInt(x)
     def read(value: YValue) = value match {
       case YInt(x) => x
-      case x => deserializeException("Expected Int as JsNumber, but got " + x)
+      case x => deserializeException(s"""Expected Int as YInt, but got $x""")
     }
   }
 }

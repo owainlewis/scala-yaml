@@ -18,5 +18,5 @@ scala> import io.forward.yaml._
 import io.forward.yaml._
 
 scala> """["foo", "bar"]""".parseYAML
-res0: io.forward.yaml.YValue = YString(["foo", "bar"])
+res0: io.forward.yaml.YValue = YSeq(["foo", "bar"])
 ```

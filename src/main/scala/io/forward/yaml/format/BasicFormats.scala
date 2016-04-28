@@ -61,3 +61,35 @@ trait BasicFormats {
     }
   }
 }
+
+object BasicFormats extends BasicFormats
+
+object Example {
+
+  case class Person(name: String, age: Int)
+
+  object Person extends BasicFormats {
+
+    implicit val format = new YamlFormat[Person] {
+
+      def dump(obj: Person): Yaml = YObj(Map("name" -> YString(obj.name), "age" -> YInt(obj.age)))
+
+      def load(yaml: Yaml): Person = yaml match {
+        case YObj(fields) =>
+          val p = for {
+            name <- fields.get("name")
+            age <- fields.get("age")
+          } yield (name, age)
+          p match {
+            case Some((YString(name), YInt(age))) => Person(name, age)
+            case _ => deserializeException("Could not derive person")
+          }
+        case _ => deserializeException("Could not derive person")
+      }
+    }
+
+    def fromYaml(input: String) = {
+      implicitly[YamlFormat[Person]].load(Parser.parseAsYAML(input))
+    }
+  }
+}

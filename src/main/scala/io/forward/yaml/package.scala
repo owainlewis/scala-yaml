@@ -1,5 +1,7 @@
 package io.forward
 
+import io.forward.yaml.core._
+
 package object yaml {
 
   def deserializeException(msg: String, cause: Throwable = null) =
@@ -11,6 +13,6 @@ package object yaml {
     new PimpedString(string)
 
   class PimpedString(string: String) {
-    def parseYAML: YValue = Parser.parseAsYAML(string)
+    def parseYAML: Yaml = Parser.parseAsYAML(string)
   }
 }

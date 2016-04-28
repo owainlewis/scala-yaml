@@ -1,14 +1,18 @@
-package io.forward.yaml
+package io.forward.yaml.core
 
-import org.yaml.snakeyaml._
-import spray.json._
+import org.yaml.snakeyaml.{Yaml => JYaml}
 
 import scala.collection.JavaConverters._
 
 object Parser {
-  def parseAsYAML(yaml: String): YValue = asYAML(load(yaml))
+  /**
+    * Parse a string of YAML into a YValue
+    *
+    * @param yaml An input YAML string
+    */
+  def parseAsYAML(yaml: String): Yaml = asYAML(load(yaml))
 
-  def asYAML(obj: Object): YValue = obj match {
+  def asYAML(obj: Object): Yaml = obj match {
     case x: java.util.Map[Object @unchecked, Object @unchecked] =>
       YObj(x.asScala.toMap map { case (k, v) => (k.toString, asYAML(v)) })
     case x: java.util.List[Object @unchecked] =>
@@ -33,5 +37,5 @@ object Parser {
       YNull
   }
 
-  def load(input: String): Object = new Yaml().load(input)
+  def load(input: String): Object = new JYaml().load(input)
 }

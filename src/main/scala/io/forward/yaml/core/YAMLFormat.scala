@@ -2,12 +2,12 @@ package io.forward.yaml.core
 
 trait YamlReader[A] {
 
-  def load(yaml: Yaml): A
+  def readYaml(yaml: Yaml): A
 }
 
 trait YamlWriter[A] {
 
-  def dump(obj: A): Yaml
+  def writeYaml(obj: A): Yaml
 }
 
 trait YamlFormat[A] extends YamlReader[A] with YamlWriter[A]
